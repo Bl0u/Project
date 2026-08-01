@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import { AuthContext } from "../../../../context/AuthContext/AuthContext";
 import {
   Box,
   TextField,
@@ -31,6 +31,8 @@ const loginSchema = z.object({
 
 export function LoginForm({ setLoadingAction, loadingAction }) {
   const [showPassword, setShowPassword] = useState(false);
+const [accessToken, setAccessToken] = useState(null) ;
+const {login} = useContext(AuthContext) ;
 
   const {
     register,
@@ -39,21 +41,19 @@ export function LoginForm({ setLoadingAction, loadingAction }) {
   } = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: "peter@gmail.com",
+      password: "hello1234",
     },
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
-
+  const onSubmit = async (data) => {
     setLoadingAction("login");
-
+    login(data) ;
     setTimeout(() => {
-      setLoadingAction(null);
-    }, 2000);
-  };
+      setLoadingAction(null) ;
 
+    }, 3000) ;
+  };
   return (
     <Box
       component="form"
