@@ -106,14 +106,14 @@ export function LoginForm({ setLoadingAction, loadingAction }) {
           underline="hover"
           color="text.secondary"
         >
-          Forgot Password?
+          Forgot Password? test
         </Link>
       </Box>
 
       <SocialAuthButton
         type="submit"
         variant="contained"
-        label="Sign In"
+        label="login"
         loading={loadingAction === "login"}
         disabled={loadingAction !== null}
       />

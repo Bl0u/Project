@@ -1,8 +1,8 @@
 import { Box } from "@mui/material";
-import { LoginPageTopBar } from "./Components/LoginPageTopBar.jsx";
-import { LoginPageHeader } from "./Components/LoginPageHeader.jsx";
-import { LoginForm } from "./Components/LoginForm.jsx";
-import { LoginSignInOptions } from "./Components/LoginSignInOptions.jsx";
+import { LoginPageTopBar } from "./components/LoginPageTopBar.jsx";
+import { LoginPageHeader } from "./components/LoginPageHeader.jsx";
+import { LoginForm } from "./components/LoginForm.jsx";
+import { LoginSignInOptions } from "./components/LoginSignInOptions.jsx";
 import { Stack } from "@mui/material";
 import { useState } from "react";
 export function LoginLeftPanel() {
