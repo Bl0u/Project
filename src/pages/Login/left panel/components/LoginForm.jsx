@@ -1,4 +1,8 @@
 import { useState } from "react";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import {
   Box,
   TextField,
@@ -8,17 +12,41 @@ import {
   Typography,
 } from "@mui/material";
 
-import LoadingButton from "@mui/lab/LoadingButton";
-
-import { Visibility, VisibilityOff, Send } from "@mui/icons-material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 import { Link as RouterLink } from "react-router-dom";
 import { SocialAuthButton } from "../../../../components/SocialAuthButton";
 
+const loginSchema = z.object({
+  email: z
+    .string()
+    .min(1, "Email is required.")
+    .email("Please enter a valid email."),
+
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters.")
+    .max(50, "Password is too long."),
+});
+
 export function LoginForm({ setLoadingAction, loadingAction }) {
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleBtnClick = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = (data) => {
+    console.log(data);
+
     setLoadingAction("login");
 
     setTimeout(() => {
@@ -29,19 +57,29 @@ export function LoginForm({ setLoadingAction, loadingAction }) {
   return (
     <Box
       component="form"
+      onSubmit={handleSubmit(onSubmit)}
       sx={{
         display: "flex",
         flexDirection: "column",
         gap: 2,
       }}
     >
-      <TextField label="Email" type="email" color="primary" fullWidth />
+      <TextField
+        label="Email"
+        type="email"
+        fullWidth
+        {...register("email")}
+        error={!!errors.email}
+        helperText={errors.email?.message}
+      />
 
       <TextField
         label="Password"
         type={showPassword ? "text" : "password"}
-        color="primary"
         fullWidth
+        {...register("password")}
+        error={!!errors.password}
+        helperText={errors.password?.message}
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
@@ -73,18 +111,18 @@ export function LoginForm({ setLoadingAction, loadingAction }) {
       </Box>
 
       <SocialAuthButton
-      variant="contained"
-        label="Login"
+        type="submit"
+        variant="contained"
+        label="Sign In"
         loading={loadingAction === "login"}
-        onClick={handleBtnClick}
         disabled={loadingAction !== null}
-      ></SocialAuthButton>
+      />
 
       <Typography
         sx={{
           display: "flex",
           justifyContent: "center",
-          opacity: "40%",
+          opacity: 0.4,
           color: "text.secondary",
         }}
       >

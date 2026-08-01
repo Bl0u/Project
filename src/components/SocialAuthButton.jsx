@@ -1,27 +1,33 @@
 import LoadingButton from "@mui/lab/LoadingButton";
 
-import EmailIcon from "@mui/icons-material/Email";
-import { useState } from "react";
-import { Typography } from "@mui/material";
-import { FaGithubAlt } from "react-icons/fa";
-
-export function SocialAuthButton({variant, onClick, icon, label, loading, disabled}) {
+export function SocialAuthButton({
+  variant = "contained",
+  type = "button",
+  onClick,
+  icon,
+  label,
+  loading = false,
+  disabled = false,
+  ...props
+}) {
   return (
-    <>
-      <LoadingButton
+    <LoadingButton
+      type={type}
+      variant={variant}
+      loading={loading}
       disabled={disabled}
-        variant={variant}
-        // variant="contained"
-        loading={loading}
-        onClick={onClick}
-        startIcon={icon || undefined}
-        fullWidth
-        sx={{
-          color: variant === "contained" ? "primary.contrastText" : variant === "outlined" ? "primary.main" : "text.secondary",
-        }}
-      >
-        {label}
-      </LoadingButton>
-    </>
+      onClick={onClick}
+      startIcon={icon}
+      fullWidth
+      sx={{
+        color:
+          variant === "contained"
+            ? "primary.contrastText"
+            : "primary.main",
+      }}
+      {...props}
+    >
+      {label}
+    </LoadingButton>
   );
 }
