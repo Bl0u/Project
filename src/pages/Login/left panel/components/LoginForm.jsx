@@ -106,7 +106,7 @@ export function LoginForm({ setLoadingAction, loadingAction }) {
           underline="hover"
           color="text.secondary"
         >
-          Forgot Password? test
+          Forgot Password?
         </Link>
       </Box>
 
