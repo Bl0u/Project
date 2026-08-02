@@ -37,6 +37,100 @@ router.get('/', authenticateToken, (req, res) => {
     });
 });
 
+router.get("/:id", authenticateToken, (req, res) => {
+  const users = getUsers();
+
+  const id = Number(req.params.id);
+
+  const user = users.find((user) => user.id === id);
+
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: "User not found",
+    });
+  }
+
+  return res.status(200).json({
+    success: true,
+    user,
+  });
+});
+
+router.post("/", (req, res) => {
+  const users = getUsers();
+
+  const { email, password } = req.body;
+
+  const existingUser = users.find(
+    (user) => user.email === email
+  );
+
+  if (existingUser) {
+    return res.status(409).json({
+      success: false,
+      message: "Email already exists",
+    });
+  }
+
+  const newUser = {
+    id: users.length + 1,
+    email,
+    password,
+    role: "customer",
+  };
+
+  users.push(newUser);
+
+  saveUsers(users);
+
+  return res.status(201).json({
+    success: true,
+    user: newUser,
+    message: "User created successfully",
+  });
+});
+
+
+router.put("/:id", authenticateToken, (req, res) => {
+  const users = getUsers();
+
+  const id = Number(req.params.id);
+
+  const index = users.findIndex((user) => user.id === id);
+
+  if (index === -1) {
+    return res.status(404).json({
+      success: false,
+      message: "User not found",
+    });
+  }
+
+  if (req.user.role !== "admin" && req.user.id !== id) {
+    return res.status(403).json({
+      success: false,
+      message: "You're not authorized to update this user.",
+    });
+  }
+
+  delete req.body.id;
+  delete req.body.role;
+
+  users[index] = {
+    ...users[index],
+    ...req.body,
+  };
+
+  saveUsers(users);
+
+  return res.status(200).json({
+    success: true,
+    user: users[index],
+    message: "User updated successfully",
+  });
+});
+
+
 router.post("/login", (req, res) => {
   const { email, password } = req.body;
     const currentUsers = getUsers() ;
