@@ -1,48 +1,46 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [accessToken, setAccessToken] = useState(null);
+  const [accessToken, setAccessToken] = useState(() =>
+    localStorage.getItem("accessToken"),
+  );
   const [user, setUser] = useState(null);
+  useEffect(() => {
+    const token = accessToken || localStorage.getItem("accessToken");
+    console.log(user) ;
+    if (token) {
+      setAccessToken(token);
+    }
+  }, [accessToken, user]);
 
   const login = async (credentials) => {
-    console.log('logged in') ;
-    try {
-      const response = await fetch(
-        "http://localhost:3000/api/users/login",
-        {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(credentials),
-        }
-      );
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.message);
-      }
-
+    const response = await fetch("http://localhost:3000/api/users/login", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(credentials),
+    });
+  
+    const result = await response.json();
+  
+    if (response.ok) {
+      localStorage.setItem("accessToken", result.accessToken);
       setAccessToken(result.accessToken);
-      console.log(result.accessToken) ;
-      // Optional for now
-      setUser({
-        email: credentials.email,
-      });
-
-      return true;
-    } catch (error) {
-      console.error(error.message);
-      return false;
+      localStorage.setItem("accessToken", result.accessToken);
+      await setUser({email: credentials.email}) ;
     }
+  
+    return result;
   };
 
   const logout = async () => {
-    console.log('logged out') ;
+    console.log("logged out");
+    localStorage.removeItem('accessToken') ;
 
     try {
       await fetch("http://localhost:3000/api/users/logout", {
@@ -58,16 +56,13 @@ export function AuthProvider({ children }) {
   };
 
   const refreshAccessToken = async () => {
-    console.log('Access Token Refreshed') ;
+    console.log("Access Token Refreshed");
 
     try {
-      const response = await fetch(
-        "http://localhost:3000/api/users/refresh",
-        {
-          method: "POST",
-          credentials: "include",
-        }
-      );
+      const response = await fetch("http://localhost:3000/api/users/refresh", {
+        method: "POST",
+        credentials: "include",
+      });
 
       const result = await response.json();
 
