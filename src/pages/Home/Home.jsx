@@ -1,12 +1,9 @@
-import { ThemeToggle } from "./components/ThemeToggle";
+import ResponsiveAppBar from "../../components/navbar/ResponsiveAppBar";
 
-export function Home(){
-
-
-    return(
-        <>
-            <ThemeToggle></ThemeToggle>            
-        </>
-    )
+export function Home() {
+  return (
+    <>
+      <ResponsiveAppBar></ResponsiveAppBar>
+    </>
+  );
 }
-
