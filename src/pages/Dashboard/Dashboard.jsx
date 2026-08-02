@@ -5,6 +5,7 @@ import { AuthContext } from "../../context/AuthContext/AuthContext";
 
 export function Dashboard() {
   const { isAuthenticated } = useContext(AuthContext);
+  console.log(isAuthenticated) ;
 
   if (!isAuthenticated) {
     return (

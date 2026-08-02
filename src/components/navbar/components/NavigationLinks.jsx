@@ -4,7 +4,7 @@ import { AuthContext } from "../../../context/AuthContext/AuthContext";
 import { useContext } from "react";
 export default function NavigationLinks() {
   const {isAuthenticated, logout} = useContext(AuthContext) ;
-
+  console.log(isAuthenticated) ;
   return (
     <Stack direction="row" spacing={2}>
       <Button component={Link} to="/dashboard" color="inherit">
