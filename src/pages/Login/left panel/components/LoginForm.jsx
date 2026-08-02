@@ -68,7 +68,7 @@ export function LoginForm({ setLoadingAction, loadingAction }) {
     if (res.success) {
       await delay(2000)   ;
       
-      navigate("/dashboard");
+      navigate("/home");
     }
     setLoadingAction(null) ;
   };
