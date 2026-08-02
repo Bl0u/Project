@@ -3,6 +3,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AuthContext } from "../../../../context/AuthContext/AuthContext";
+import { Navigate, useNavigate } from "react-router-dom";
 import {
   Box,
   TextField,
@@ -30,10 +31,13 @@ const loginSchema = z.object({
 });
 
 export function LoginForm({ setLoadingAction, loadingAction }) {
+  const delay = (ms) => new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
   const [showPassword, setShowPassword] = useState(false);
-const [accessToken, setAccessToken] = useState(null) ;
-const {login} = useContext(AuthContext) ;
-
+  const [accessToken, setAccessToken] = useState(null);
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -46,13 +50,27 @@ const {login} = useContext(AuthContext) ;
     },
   });
 
+  const [loginRes, setLoginRes] = useState({
+    message: "",
+    type: "", // "success" | "error"
+  });
   const onSubmit = async (data) => {
     setLoadingAction("login");
-    login(data) ;
-    setTimeout(() => {
-      setLoadingAction(null) ;
-
-    }, 3000) ;
+  
+    const res = await login(data);
+    
+    await delay(3000)   ;
+    setLoginRes({
+      message: res.message,
+      type: res.success ? "success" : "error",
+    });
+    
+    if (res.success) {
+      await delay(2000)   ;
+      
+      navigate("/dashboard");
+    }
+    setLoadingAction(null) ;
   };
   return (
     <Box
@@ -93,6 +111,17 @@ const {login} = useContext(AuthContext) ;
           ),
         }}
       />
+
+      <Typography
+        variant="body2"
+        sx={{
+          mt: 2,
+          color: loginRes.type === "success" ? "success.main" : "error.main",
+          fontWeight: 500,
+        }}
+      >
+        {loginRes.message}
+      </Typography>
 
       <Box
         sx={{

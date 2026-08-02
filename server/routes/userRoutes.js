@@ -62,6 +62,7 @@ router.post("/login", (req, res) => {
     return res.json({
         success: true,
         accessToken,
+        message: "You have been authorized",
     });
 
 });
