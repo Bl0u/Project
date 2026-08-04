@@ -8,32 +8,14 @@
     },
     {
       "id": 2,
+      "email": "asdasdasdadad@gmail.com",
+      "password": "how dareu",
+      "role": "customer"
+    },
+    {
+      "id": 3,
       "email": "danil@gmail.com",
-      "password": "test",
-      "role": "customer"
-    },
-    {
-      "id": 4,
-      "email": "john.doe@gmail.com",
-      "password": "testtesttest",
-      "role": "customer"
-    },
-    {
-      "id": 5,
-      "email": "test@gmail.com",
-      "password": "SecurePass123",
-      "role": "customer"
-    },
-    {
-      "id": 6,
-      "email": "damn@gmail.com",
-      "password": "SecurePass123",
-      "role": "customer"
-    },
-    {
-      "id": 6,
-      "email": "hope@gmail.com",
-      "password": "SecurePass123",
+      "password": "hello1234",
       "role": "customer"
     }
   ]

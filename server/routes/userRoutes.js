@@ -130,7 +130,51 @@ router.put("/:id", authenticateToken, (req, res) => {
   });
 });
 
+router.delete("/:id", authenticateToken, (req, res) => {
 
+    const users = getUsers();
+
+    const id = Number(req.params.id);
+
+    const index = users.findIndex(
+        user => user.id === id
+    );
+
+    if(index === -1){
+
+        return res.status(404).json({
+            success:false,
+            message:"User not found"
+        });
+
+    }
+
+    if(req.user.role !== "admin"){
+
+        return res.status(403).json({
+            success:false,
+            message:"Only admins can delete users."
+        });
+
+    }
+    console.log(req.user) ;
+    const deletedUser = users[index];
+
+    users.splice(index,1);
+
+    saveUsers(users);
+
+    return res.json({
+
+        success:true,
+
+        message:"User deleted successfully.",
+
+        user:deletedUser
+
+    });
+
+});
 router.post("/login", (req, res) => {
   const { email, password } = req.body;
     const currentUsers = getUsers() ;
@@ -146,7 +190,9 @@ router.post("/login", (req, res) => {
   }
 
   const accessToken = jwt.sign(
-    { email: user.email },
+    { email: user.email,
+        role: user.role,
+     },
     process.env.ACCESS_TOKEN_SECRET,
     {
       expiresIn: "15m",
