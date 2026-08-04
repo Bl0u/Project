@@ -4,18 +4,15 @@ import { useNavigate } from "react-router-dom";
 export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [accessToken, setAccessToken] = useState(() =>
-    localStorage.getItem("accessToken"),
-  );
+  const [accessToken, setAccessToken] = useState(null);
   const [user, setUser] = useState(null);
-  useEffect(() => {
-    const token = accessToken || localStorage.getItem("accessToken");
-    console.log(user) ;
-    if (token) {
-      setAccessToken(token);
-    }
-  }, [accessToken, user]);
-
+  // useEffect(() => {
+  //   const token = accessToken || localStorage.getItem("accessToken");
+  //   console.log(user) ;
+  //   if (token) {
+  //     setAccessToken(token);
+  //   }
+  // }, [accessToken, user]);
   const login = async (credentials) => {
     const response = await fetch("http://localhost:3000/api/users/login", {
       method: "POST",
@@ -27,11 +24,13 @@ export function AuthProvider({ children }) {
     });
   
     const result = await response.json();
+    console.log(result) ;
+    console.log(response) ;
   
     if (response.ok) {
       localStorage.setItem("accessToken", result.accessToken);
       setAccessToken(result.accessToken);
-      localStorage.setItem("accessToken", result.accessToken);
+
       await setUser({email: credentials.email}) ;
     }
   
