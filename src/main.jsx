@@ -5,13 +5,16 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import { AppThemeProvider } from "./context/ThemeContext";
 import { AuthProvider } from "./context/AuthContext/AuthContext";
+import { LanguageProvider } from "./context/LanguageContext/LanguageContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <AppThemeProvider>
     <AuthProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <LanguageProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </LanguageProvider>
     </AuthProvider>
   </AppThemeProvider>,
 );
