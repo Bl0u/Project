@@ -1,7 +1,6 @@
-import { ThemeContext } from "@emotion/react";
 import { Stack, Button } from "@mui/material";
 import { useContext } from "react";
-
+import { ThemeContext } from "../../../context/ThemeContext";
 export default function NavbarActions() {
 
     const { mode, toggleTheme } = useContext(ThemeContext);
@@ -17,7 +16,10 @@ export default function NavbarActions() {
         Translate
       </Button>
 
-      <Button onClick={toggleTheme} color="inherit" >
+      <Button onClick={() => {
+        console.log("test") ;
+        toggleTheme() ;
+      }} color="inherit" >
         Theme Toggle
       </Button>
     </Stack>
