@@ -24,14 +24,14 @@ export function AuthProvider({ children }) {
     });
   
     const result = await response.json();
-    console.log(result) ;
+    console.log(result.user) ;
     console.log(response) ;
   
     if (response.ok) {
       localStorage.setItem("accessToken", result.accessToken);
       setAccessToken(result.accessToken);
 
-      await setUser({email: credentials.email}) ;
+      await setUser(result.user) ;
     }
   
     return result;

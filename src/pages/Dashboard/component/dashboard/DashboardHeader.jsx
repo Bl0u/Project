@@ -7,7 +7,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { AuthContext } from "../../../context/AuthContext/AuthContext";
+import { AuthContext } from "../../../../context/AuthContext/AuthContext";
 
 export default function DashboardHeader({
   usersCount,

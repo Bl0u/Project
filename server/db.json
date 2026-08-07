@@ -2,21 +2,10 @@
   "users": [
     {
       "id": 1,
+      "name": "peter",
       "email": "peter@gmail.com",
       "password": "hello1234",
       "role": "admin"
-    },
-    {
-      "id": 2,
-      "email": "asdasdasdadad@gmail.com",
-      "password": "how dareu",
-      "role": "customer"
-    },
-    {
-      "id": 3,
-      "email": "danil@gmail.com",
-      "password": "hello1234",
-      "role": "customer"
     }
   ]
 }

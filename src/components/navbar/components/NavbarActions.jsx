@@ -1,35 +1,52 @@
 import { Stack, Button } from "@mui/material";
+import { Link } from "react-router-dom";
 import { useContext } from "react";
+
 import { ThemeContext } from "../../../context/ThemeContext";
-import { LanguageContext  } from "../../../context/LanguageContext/LanguageContext";
+// import { LanguageContext } from "../../../context/LanguageContext/LanguageContext";
+import { AuthContext } from "../../../context/AuthContext/AuthContext";
+import MessagesButton from "./MessagesButton";
+import  NotificationsButton from "./NotificationsButton";
+
+// import UserMenu from "./UserMenu";
+import UserMenu from "./UserMenu";
 
 export default function NavbarActions() {
+  const { toggleTheme } = useContext(ThemeContext);
 
-    const { mode, toggleTheme } = useContext(ThemeContext);
-    const {language, toggleLanguage} = useContext(LanguageContext) ;
+  // const { language, toggleLanguage } = useContext(LanguageContext);
 
-    const handleTranslate = () => {
-        console.log("Open language menu");
-      };
-    
+  const { isAuthenticated } = useContext(AuthContext);
+
   return (
-    <Stack direction="row" spacing={2}>
-      {/* <Button onClick={toggleLanguage} color="inherit"> */}
-        {/* Translate */}
-      {/* </Button> */}
+    <Stack direction="row" spacing={1} alignItems="center">
+      {isAuthenticated ? (
+        <>
+          <MessagesButton />
+          <NotificationsButton />
+          <UserMenu />
+        </>
+      ) : (
+        <>
+          <Button
+            sx={{
+                color: "inherit",
+            }}
+            component={Link}
+            to="/login"
+          >
+            Login
+          </Button>
 
-      <Button
-      onClick={toggleLanguage}
-      color="inherit"
-    >
-      {language === "en"
-        ? "العربية"
-        : "English"}
-    </Button>
-
-      <Button onClick={toggleTheme} color="inherit" >
-        Theme Toggle
-      </Button>
+          <Button 
+          sx={{
+            color: "inherit",
+        }}
+          component={Link} to="/register">
+            Register
+          </Button>
+        </>
+      )}
     </Stack>
   );
 }

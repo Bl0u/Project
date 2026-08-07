@@ -12,7 +12,7 @@ import {
   // import DashboardEmptyState from "./DashboardEmptyState";
   import DashboardTableRow from "./DashboardTableRow" ;
   // import DashboardEmptyState from "./DashboardEmptyState" ;
-  import DashboardEmptyState from "../component/DashboardEmptyState" ;
+  import DashboardEmptyState from "./DashboardEmptyState" ;
 
   
   export default function DashboardTable({ users, setUsers, setError }) {

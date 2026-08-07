@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext/AuthContext";
-
-import DashboardHeader from "./component/DashboardHeader";
-import DashboardLoading from "./component/DashboardLoading";
-import DashboardAccessDenied from "./component/DashboardAccessDenied";
-import DashboardTable from "./component/DashboardTable";
+import Modal from "@mui/material/Modal";
+import DashboardHeader from "./component/dashboard/DashboardHeader";
+import DashboardLoading from "./component/dashboard/DashboardLoading";
+import DashboardAccessDenied from "./component/dashboard/DashboardAccessDenied";
+import DashboardTable from "./component/dashboard/DashboardTable";
 import { Alert, Box, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 export default function Dashboard() {
@@ -13,6 +13,8 @@ export default function Dashboard() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [open, setOpen] = useState(false);
+  const toggleOpen = () => setOpen((prev) => !prev);
 
   useEffect(() => {
     if (!isAuthenticated) return;
@@ -45,9 +47,6 @@ export default function Dashboard() {
 
     fetchUsers();
   }, [isAuthenticated, accessToken]);
-  useEffect(() => {
-    console.log(users);
-  }, [users]);
   if (!isAuthenticated) {
     return <DashboardAccessDenied />;
   }
@@ -57,33 +56,38 @@ export default function Dashboard() {
   }
 
   return (
-    <Box p={4}>
-      <Button
-        component={Link}
-        to="/home"
-        variant="outlined"
-        sx={{ mb: 3 }}
+    <>
+      <Button onClick={toggleOpen}>Inspect Users Data base</Button>
+      <Modal
+        open={open}
+        onClose={toggleOpen}
+                aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
       >
-        ← Back to Home
-      </Button>
-  
-      <DashboardHeader
-        usersCount={users.length}
-        setUsers={setUsers}
-        setError={setError}
-      />
-  
-      {error && (
-        <Alert severity="error" sx={{ mb: 3 }}>
-          {error}
-        </Alert>
-      )}
-  
-      <DashboardTable
-        users={users}
-        setUsers={setUsers}
-        setError={setError}
-      />
-    </Box>
+        <Box p={4}>
+          <Button component={Link} to="/home" variant="outlined" sx={{ mb: 3 }}>
+            ← Back to Home
+          </Button>
+
+          <DashboardHeader
+            usersCount={users.length}
+            setUsers={setUsers}
+            setError={setError}
+          />
+
+          {error && (
+            <Alert severity="error" sx={{ mb: 3 }}>
+              {error}
+            </Alert>
+          )}
+
+          <DashboardTable
+            users={users}
+            setUsers={setUsers}
+            setError={setError}
+          />
+        </Box>
+      </Modal>
+    </>
   );
 }

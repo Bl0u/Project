@@ -1,32 +1,29 @@
-import { Stack, Button, Avatar } from "@mui/material";
+import { Stack, Button } from "@mui/material";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../../../context/AuthContext/AuthContext";
 import { useContext } from "react";
-export default function NavigationLinks() {
-  const {isAuthenticated, logout} = useContext(AuthContext) ;
-  console.log(isAuthenticated) ;
-  return (
-    <Stack direction="row" spacing={2}>
-      <Button component={Link} to="/dashboard" color="inherit">
-        Dashboard
-      </Button>
+import { AuthContext } from "../../../context/AuthContext/AuthContext";
 
-      {isAuthenticated ? (
-        <>
-        <Button onClick={logout} component={Link} to="/login" color="inherit"> 
-          log out
+
+export default function NavigationLinks() {
+  const { isAuthenticated } = useContext(AuthContext);
+
+  if (!isAuthenticated){
+    return (
+      <Stack direction="row" spacing={1} mr={2}>
+        <Button component={Link} to="/" color="inherit">
+          Home
         </Button>
-        <Avatar
-          component={Link}
-          to="/profile"
-          sx={{ width: 32, height: 32, cursor: "pointer" }}
-        />
-        </>
-      ) : (
-        <Button component={Link} to="/login" color="inherit">
-          Login
+  
+        <Button component={Link} to="/dashboard" color="inherit">
+          Dashboard
         </Button>
-      )}
-    </Stack>
-  );
+  
+        <Button component={Link} to="/about" color="inherit">
+          About
+        </Button>
+      </Stack>
+    );
+  } 
+
+  return ;
 }

@@ -12,29 +12,24 @@ const dbPath = path.join(__dirname, "../db.json");
 
 const db = JSON.parse(fs.readFileSync(dbPath, "utf8"));
 const users = db.users;
-
-
+// ----------------------------------------------------------------------
 function getUsers() {
-    const db = JSON.parse(fs.readFileSync(dbPath, "utf8"));
-    return db.users;
-  }
+  const db = JSON.parse(fs.readFileSync(dbPath, "utf8"));
+  return db.users;
+}
 
-  function saveUsers(users) {
-    fs.writeFileSync(
-      dbPath,
-      JSON.stringify({ users }, null, 2)
-    );
-  }
+function saveUsers(users) {
+  fs.writeFileSync(dbPath, JSON.stringify({ users }, null, 2));
+}
 const router = express.Router();
 const refreshTokens = [];
 
-router.get('/', authenticateToken, (req, res) => {
-    
-    const users = getUsers() ;
-    return res.status(200).json({
-        succes:true,
-        users,
-    });
+router.get("/", authenticateToken, (req, res) => {
+  const users = getUsers();
+  return res.status(200).json({
+    succes: true,
+    users,
+  });
 });
 
 router.get("/:id", authenticateToken, (req, res) => {
@@ -62,9 +57,7 @@ router.post("/", (req, res) => {
 
   const { email, password } = req.body;
 
-  const existingUser = users.find(
-    (user) => user.email === email
-  );
+  const existingUser = users.find((user) => user.email === email);
 
   if (existingUser) {
     return res.status(409).json({
@@ -90,7 +83,6 @@ router.post("/", (req, res) => {
     message: "User created successfully",
   });
 });
-
 
 router.put("/:id", authenticateToken, (req, res) => {
   const users = getUsers();
@@ -131,53 +123,44 @@ router.put("/:id", authenticateToken, (req, res) => {
 });
 
 router.delete("/:id", authenticateToken, (req, res) => {
+  const users = getUsers();
 
-    const users = getUsers();
+  const id = Number(req.params.id);
 
-    const id = Number(req.params.id);
+  const index = users.findIndex((user) => user.id === id);
 
-    const index = users.findIndex(
-        user => user.id === id
-    );
-
-    if(index === -1){
-
-        return res.status(404).json({
-            success:false,
-            message:"User not found"
-        });
-
-    }
-
-    if(req.user.role !== "admin"){
-
-        return res.status(403).json({
-            success:false,
-            message:"Only admins can delete users."
-        });
-
-    }
-    console.log(req.user) ;
-    const deletedUser = users[index];
-
-    users.splice(index,1);
-
-    saveUsers(users);
-
-    return res.json({
-
-        success:true,
-
-        message:"User deleted successfully.",
-
-        user:deletedUser
-
+  if (index === -1) {
+    return res.status(404).json({
+      success: false,
+      message: "User not found",
     });
+  }
 
+  if (req.user.role !== "admin") {
+    return res.status(403).json({
+      success: false,
+      message: "Only admins can delete users.",
+    });
+  }
+  console.log(req.user);
+  const deletedUser = users[index];
+
+  users.splice(index, 1);
+
+  saveUsers(users);
+
+  return res.json({
+    success: true,
+
+    message: "User deleted successfully.",
+
+    user: deletedUser,
+  });
 });
+
 router.post("/login", (req, res) => {
   const { email, password } = req.body;
-    const currentUsers = getUsers() ;
+  const currentUsers = getUsers();
   const user = currentUsers.find(
     (user) => user.email === email && user.password === password,
   );
@@ -190,9 +173,7 @@ router.post("/login", (req, res) => {
   }
 
   const accessToken = jwt.sign(
-    { email: user.email,
-        role: user.role,
-     },
+    { email: user.email, role: user.role },
     process.env.ACCESS_TOKEN_SECRET,
     {
       expiresIn: "15m",
@@ -220,9 +201,11 @@ router.post("/login", (req, res) => {
     success: true,
     accessToken,
     message: "You have been authorized",
+    user: {
+      ...user,
+    },
   });
 });
-
 
 router.post("/refresh", (req, res) => {
   const refreshToken = req.cookies.refreshToken;
