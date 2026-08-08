@@ -1,4 +1,4 @@
-import ResponsiveAppBar from "../../components/navbar/ResponsiveAppBar";
+// import Navbar from "../../components/navbar/Navbar";
 
 import {
   Box,
@@ -14,7 +14,6 @@ export function Home() {
   const {user, isAuthenticated} = useContext(AuthContext) ;
   return (
     <>
-      <ResponsiveAppBar />
 
       <Container maxWidth="md" sx={{ mt: 6 }}>
         <Paper

@@ -5,7 +5,7 @@ import {
   TableRow,
   TextField,
 } from "@mui/material";
-import { AuthContext } from "../../../context/AuthContext/AuthContext";
+import { AuthContext } from "../../../../context/AuthContext/AuthContext";
 
 export default function DashboardTableRow({
   user,
@@ -22,6 +22,7 @@ export default function DashboardTableRow({
   });
 
   const deleteAccount = async (id) => {
+    console.log('delete') ;
     try {
       const response = await fetch(
         `http://localhost:3000/api/users/${id}`,

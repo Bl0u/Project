@@ -59,7 +59,7 @@ export function LoginForm({ setLoadingAction, loadingAction }) {
   
     const res = await login(data);
     
-    await delay(3000)   ;
+    // await delay(3000)   ;
     setLoginRes({
       message: res.message,
       type: res.success ? "success" : "error",
@@ -68,7 +68,7 @@ export function LoginForm({ setLoadingAction, loadingAction }) {
     if (res.success) {
       await delay(2000)   ;
       
-      navigate("/dashboard");
+      navigate("/home");
     }
     setLoadingAction(null) ;
   };
