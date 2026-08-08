@@ -20,13 +20,6 @@
       "email": "asdasdasda2@gmail.com",
       "password": "asdasdasdasdasd",
       "role": "customer"
-    },
-    {
-      "id": 7,
-      "name": "danil@gmail.com",
-      "email": "danil2@gmail.com",
-      "password": "hello1234",
-      "role": "customer"
     }
   ]
 }

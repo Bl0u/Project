@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import {
   Modal,
@@ -12,8 +12,8 @@ import {
   IconButton,
 } from "@mui/material";
 
-import CloseIcon from "@mui/icons-material/Close";
-
+import { FiX } from "react-icons/fi";
+import { AuthContext } from "../../../../context/AuthContext/AuthContext";
 const modalStyle = {
   position: "absolute",
   top: "50%",
@@ -46,6 +46,7 @@ export default function EditUserModal({
   });
 
   const [loading, setLoading] = useState(false);
+  const {accessToken} = useContext(AuthContext) ;
 
   useEffect(() => {
     if (!user) return;
@@ -53,6 +54,7 @@ export default function EditUserModal({
     setFormData({
       name: user.name,
       email: user.email,
+      password: user.password,
       role: user.role,
     });
   }, [user]);
@@ -66,7 +68,7 @@ export default function EditUserModal({
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    console.log(formData) ;
     try {
       setLoading(true);
       setError("");
@@ -80,6 +82,7 @@ export default function EditUserModal({
 
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
           },
 
           body: JSON.stringify(formData),
@@ -99,15 +102,10 @@ export default function EditUserModal({
       );
 
       onClose();
-
     } catch (err) {
-
       setError(err.message);
-
     } finally {
-
       setLoading(false);
-
     }
   };
 
@@ -117,48 +115,62 @@ export default function EditUserModal({
     <Modal
       open={open}
       onClose={onClose}
+      aria-labelledby="edit-user-modal"
     >
       <Box sx={modalStyle}>
-
+        {/* Header */}
         <Stack
           direction="row"
           justifyContent="space-between"
           alignItems="center"
         >
           <Typography
+            id="edit-user-modal"
             variant="h5"
             fontWeight={700}
           >
             Edit User
           </Typography>
 
-          <IconButton onClick={onClose}>
-            <CloseIcon />
+          <IconButton
+            type="button"
+            onClick={onClose}
+          >
+            <FiX />
           </IconButton>
         </Stack>
 
         <Divider sx={{ my: 2 }} />
 
+        {/* Form */}
         <Box
           component="form"
           onSubmit={handleSubmit}
         >
           <Stack spacing={3}>
-
             <TextField
               label="Name"
               name="name"
               value={formData.name}
               onChange={handleChange}
-              required
+              fullWidth
             />
 
             <TextField
               label="Email"
               name="email"
+              type="email"
               value={formData.email}
               onChange={handleChange}
-              required
+              fullWidth
+            />
+            <TextField
+              label="Password"
+              name="password"
+              type="password"
+              value={formData.password}
+              onChange={handleChange}
+              fullWidth
             />
 
             <TextField
@@ -167,6 +179,7 @@ export default function EditUserModal({
               name="role"
               value={formData.role}
               onChange={handleChange}
+              fullWidth
             >
               <MenuItem value="user">
                 User
@@ -177,12 +190,14 @@ export default function EditUserModal({
               </MenuItem>
             </TextField>
 
+            {/* Actions */}
             <Stack
               direction="row"
               justifyContent="flex-end"
               spacing={2}
             >
               <Button
+                type="button"
                 variant="outlined"
                 onClick={onClose}
               >
@@ -194,15 +209,11 @@ export default function EditUserModal({
                 type="submit"
                 disabled={loading}
               >
-                Save Changes
+                {loading ? "Saving..." : "Save Changes"}
               </Button>
-
             </Stack>
-
           </Stack>
-
         </Box>
-
       </Box>
     </Modal>
   );
