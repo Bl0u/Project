@@ -1,20 +1,30 @@
-import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import { NavLink } from "react-router-dom";
-import { Button } from "@mui/material";
+import {
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
 
-export  function SideNavItem({
+import { NavLink } from "react-router-dom";
+
+export function SideNavItem({
   label,
   path,
   icon: Icon,
 }) {
   return (
     <ListItemButton
+      end
       component={NavLink}
       to={path}
       sx={{
         borderRadius: 2,
-        maxHeight: 40,
         mb: 1,
+
+        color: "text.secondary",
+
+        "& .MuiListItemIcon-root": {
+          color: "text.secondary",
+        },
 
         "&.active": {
           bgcolor: "primary.main",
@@ -23,17 +33,20 @@ export  function SideNavItem({
           "& .MuiListItemIcon-root": {
             color: "white",
           },
+
+          "&:hover": {
+            bgcolor: "primary.dark",
+          },
         },
       }}
     >
-      <ListItemIcon>
-        <Icon size={18} />
+      <ListItemIcon sx={{ minWidth: 40 }}>
+        {Icon && <Icon size={18} />}
       </ListItemIcon>
 
       <ListItemText primary={label} />
     </ListItemButton>
-    // <Button>test</Button>
   );
 }
 
-export default SideNavItem
+export default SideNavItem;

@@ -18,7 +18,7 @@ import {
 import { FiEdit2, FiTrash2 } from "react-icons/fi";
 
 import DeleteUserDialog from "./DeleteUserDialog";
-
+import EditUserModal from "./EditUserModal" ;
 export default function UsersTable({
   users,
   setUsers,
@@ -26,17 +26,28 @@ export default function UsersTable({
 }) {
   const [selectedUser, setSelectedUser] = useState(null);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
 
   const handleDeleteClick = (user) => {
     setSelectedUser(user);
     setDeleteOpen(true);
   };
-
   const handleCloseDelete = () => {
     setDeleteOpen(false);
     setSelectedUser(null);
   };
+  
+  
+  const handleEditClick = (user) => {
+    setSelectedUser(user);
+    setEditOpen(true);
+  };
 
+  const handleCloseEdit = () => {
+    setEditOpen(false);
+    setSelectedUser(null);
+  };
+  
   return (
     <>
       <TableContainer
@@ -114,6 +125,9 @@ export default function UsersTable({
 
                   <Tooltip title="Edit">
                     <IconButton
+                    onClick={() => {
+                      handleEditClick(user)
+                    }}
                       color="primary"
                     >
                       <FiEdit2 />
@@ -147,6 +161,14 @@ export default function UsersTable({
         setUsers={setUsers}
         setError={setError}
       />
+      <EditUserModal
+        open={editOpen}
+        onClose={handleCloseEdit}
+        user={selectedUser}
+        setUsers={setUsers}
+        setError={setError}
+      />
+      
     </>
   );
 }

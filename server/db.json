@@ -8,20 +8,6 @@
       "role": "admin"
     },
     {
-      "id": 5,
-      "name": "testagain",
-      "email": "peteraasd@gmail.com",
-      "password": "hello1234",
-      "role": "customer"
-    },
-    {
-      "id": 3,
-      "name": "peter",
-      "email": "Test2@gmail.com",
-      "password": "hello1234",
-      "role": "customer"
-    },
-    {
       "id": 4,
       "name": "asdasdasd",
       "email": "asdasdasd@gmail.com",
@@ -36,10 +22,10 @@
       "role": "customer"
     },
     {
-      "id": 6,
-      "name": "how123123",
-      "email": "how123@gmail.com",
-      "password": "testtestttest",
+      "id": 7,
+      "name": "danil@gmail.com",
+      "email": "danil2@gmail.com",
+      "password": "hello1234",
       "role": "customer"
     }
   ]

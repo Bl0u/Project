@@ -1,18 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import { Box, Alert } from "@mui/material";
 
-import { AuthContext } from "../../context/AuthContext/AuthContext";
+import { AuthContext } from "../../../../context/AuthContext/AuthContext";
 
-import DashboardHeader from "./component/dashboard/DashboardHeader";
-import UsersPreview from "./component/dashboard/UsersPreview";
-import AddUserModal from "./component/dashboard/AddUserModal";
-import UsersModal from "./component/dashboard/UsersModal";
+import DashboardHeader from "./DashboardHeader" ;
+import UsersPreview from "./UsersPreview" ;
+import UsersModal from "./UsersModal"
+import AddUserModal from "./AddUserModal" ;
 
-import DashboardLoading from "./component/dashboard/DashboardLoading";
-import DashboardAccessDenied from "./component/dashboard/DashboardAccessDenied";
 
-import { SideNavbar } from "./component/SideNavbar/SideNavbar";
-
+import DashboardLoading from "./DashboardLoading";
+import DashboardAccessDenied from "./DashboardAccessDenied";
 export default function Dashboard() {
   const { isAuthenticated, accessToken } =
     useContext(AuthContext);
@@ -75,10 +73,6 @@ export default function Dashboard() {
         overflow: "hidden",
       }}
     >
-      {/* SIDEBAR */}
-
-      <SideNavbar />
-
       {/* DASHBOARD CONTENT */}
 
       <Box

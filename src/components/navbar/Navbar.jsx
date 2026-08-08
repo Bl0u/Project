@@ -6,8 +6,15 @@ import NavigationLinks from "./components/NavigationLinks";
 import NavbarActions from "./components/NavbarActions";
 
 import { Box } from "@mui/material";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext/AuthContext";
 
 export default function Navbar() {
+  const {isAuthenticated} = useContext(AuthContext)
+
+  if (!isAuthenticated){
+    return <></>
+  }
   return (
     <AppBar
       position="static"

@@ -10,6 +10,19 @@ export const navigationMainMenu = [
     path: "/dashboard",
     icon: FiHome,
   },
+  {
+    id: "Products",
+    label: "Products",
+    path: "/dashboard/products",
+    icon: FiHome
+  },
+  {
+    id: "Discount",
+    label: "Discount",
+    path: "/dashboard/discount",
+    icon: FiHome
+  },
+  
 ];
 
 export const other = [

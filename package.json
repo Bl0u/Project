@@ -17,10 +17,12 @@
     "@mui/icons-material": "^5.18.0",
     "@mui/lab": "^5.0.0-alpha.177",
     "@mui/material": "^5.18.0",
+    "@reduxjs/toolkit": "^2.12.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-hook-form": "^7.84.0",
     "react-icons": "^5.7.0",
+    "react-redux": "^9.3.0",
     "react-router-dom": "^7.18.2",
     "tailwindcss": "^4.3.3",
     "zod": "^4.4.3"

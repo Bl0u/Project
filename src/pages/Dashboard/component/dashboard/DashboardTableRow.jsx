@@ -22,6 +22,7 @@ export default function DashboardTableRow({
   });
 
   const deleteAccount = async (id) => {
+    console.log('delete') ;
     try {
       const response = await fetch(
         `http://localhost:3000/api/users/${id}`,
