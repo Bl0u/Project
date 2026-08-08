@@ -32,6 +32,26 @@ router.get("/", authenticateToken, (req, res) => {
   });
 });
 
+router.get("/me", authenticateToken, (req, res) => {
+  const users = getUsers();
+
+  const user = users.find(
+    (u) => u.email === req.user.email
+  );
+
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: "User not found",
+    });
+  }
+
+  res.json({
+    success: true,
+    user,
+  });
+});
+
 router.get("/:id", authenticateToken, (req, res) => {
   const users = getUsers();
 
@@ -55,7 +75,7 @@ router.get("/:id", authenticateToken, (req, res) => {
 router.post("/", (req, res) => {
   const users = getUsers();
 
-  const { email, password } = req.body;
+  const { email, password, name } = req.body;
 
   const existingUser = users.find((user) => user.email === email);
 
@@ -68,6 +88,7 @@ router.post("/", (req, res) => {
 
   const newUser = {
     id: users.length + 1,
+    name,
     email,
     password,
     role: "customer",

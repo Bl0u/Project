@@ -1,20 +1,28 @@
 import { useContext, useEffect, useState } from "react";
+import { Box, Alert } from "@mui/material";
+
 import { AuthContext } from "../../context/AuthContext/AuthContext";
-import Modal from "@mui/material/Modal";
+
 import DashboardHeader from "./component/dashboard/DashboardHeader";
+import UsersPreview from "./component/dashboard/UsersPreview";
+import AddUserModal from "./component/dashboard/AddUserModal";
+import UsersModal from "./component/dashboard/UsersModal";
+
 import DashboardLoading from "./component/dashboard/DashboardLoading";
 import DashboardAccessDenied from "./component/dashboard/DashboardAccessDenied";
-import DashboardTable from "./component/dashboard/DashboardTable";
-import { Alert, Box, Button } from "@mui/material";
-import { Link } from "react-router-dom";
+
+import { SideNavbar } from "./component/SideNavbar/SideNavbar";
+
 export default function Dashboard() {
-  const { isAuthenticated, accessToken } = useContext(AuthContext);
+  const { isAuthenticated, accessToken } =
+    useContext(AuthContext);
 
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [open, setOpen] = useState(false);
-  const toggleOpen = () => setOpen((prev) => !prev);
+
+  const [addUserOpen, setAddUserOpen] = useState(false);
+  const [usersModalOpen, setUsersModalOpen] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated) return;
@@ -22,14 +30,17 @@ export default function Dashboard() {
     const fetchUsers = async () => {
       try {
         setLoading(true);
+        setError("");
 
-        const response = await fetch("http://localhost:3000/api/users", {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
+        const response = await fetch(
+          "http://localhost:3000/api/users",
+          {
+            credentials: "include",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
 
         const result = await response.json();
 
@@ -47,6 +58,7 @@ export default function Dashboard() {
 
     fetchUsers();
   }, [isAuthenticated, accessToken]);
+
   if (!isAuthenticated) {
     return <DashboardAccessDenied />;
   }
@@ -56,38 +68,66 @@ export default function Dashboard() {
   }
 
   return (
-    <>
-      <Button onClick={toggleOpen}>Inspect Users Data base</Button>
-      <Modal
-        open={open}
-        onClose={toggleOpen}
-                aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+    <Box
+      sx={{
+        height: "calc(100vh - 64px)",
+        display: "flex",
+        overflow: "hidden",
+      }}
+    >
+      {/* SIDEBAR */}
+
+      <SideNavbar />
+
+      {/* DASHBOARD CONTENT */}
+
+      <Box
+        sx={{
+          flex: 1,
+          minWidth: 0,
+
+          overflowY: "auto",
+
+          py: 5,
+          px: 3,
+        }}
       >
-        <Box p={4}>
-          <Button component={Link} to="/home" variant="outlined" sx={{ mb: 3 }}>
-            ← Back to Home
-          </Button>
+        <DashboardHeader
+          usersCount={users.length}
+          onAddUser={() => setAddUserOpen(true)}
+        />
 
-          <DashboardHeader
-            usersCount={users.length}
-            setUsers={setUsers}
-            setError={setError}
-          />
+        {error && (
+          <Alert
+            severity="error"
+            sx={{ mb: 3 }}
+          >
+            {error}
+          </Alert>
+        )}
 
-          {error && (
-            <Alert severity="error" sx={{ mb: 3 }}>
-              {error}
-            </Alert>
-          )}
+        <UsersPreview
+          users={users}
+          setUsers={setUsers}
+          setError={setError}
+          onViewAll={() => setUsersModalOpen(true)}
+        />
 
-          <DashboardTable
-            users={users}
-            setUsers={setUsers}
-            setError={setError}
-          />
-        </Box>
-      </Modal>
-    </>
+        <AddUserModal
+          open={addUserOpen}
+          onClose={() => setAddUserOpen(false)}
+          setUsers={setUsers}
+          setError={setError}
+        />
+
+        <UsersModal
+          open={usersModalOpen}
+          onClose={() => setUsersModalOpen(false)}
+          users={users}
+          setUsers={setUsers}
+          setError={setError}
+        />
+      </Box>
+    </Box>
   );
 }
